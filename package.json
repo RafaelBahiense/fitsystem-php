@@ -1,0 +1,17 @@
+{
+  "name": "php-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npx prettier src/**/* --write --config prettierc.json --log-level debug"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.22.2",
+    "prettier": "3.2.5",
+    "tailwindcss": "^3.4.3"
+  }
+}
