@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "format": "npx prettier src/**/* --write --config prettierc.json --log-level debug"
+    "link:xampp:linux": "sudo ln -sfn $(pwd)/src /opt/lampp/htdocs/fitsystem",
+    "unlink:xampp:linux": "sudo unlink /opt/lampp/htdocs/fitsystem",
+    "set:perms": "chmod -R 755 src",
+    "stop:apache": "sudo service apache2 stop",
+    "format": "npx prettier src/**/* --write --config prettierc.json --log-level debug",
+    "watch:tailwind": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
   "author": "",
   "license": "ISC",
