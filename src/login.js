@@ -4,8 +4,22 @@ $(document).ready(() => {
       username: $("#username").val(),
       password: $("#password").val(),
     };
-    $.post("login.php", client, (response) => {
-      console.log(response);
+
+    $.ajax({
+      type: "POST",
+      url: "login.php",
+      data: client,
+      dataType: "json",
+      success: function(response) {
+        if (response.redirect) {
+          window.location.href = response.redirect;
+        } else if (response.error) {
+          $("#error").text(response.error);
+        }
+      },
+      error: function() {
+        $("#error").text("An error occurred during the request.");
+      }
     });
   });
 });
