@@ -1,60 +1,47 @@
 $(document).ready(() => {
-  $.get("list_clients.php", (data) => {
-    data.forEach((client) => {
-      //$("<li></li>").text(client.name).appendTo("#clients-list");
-      $(
-        `<li>
-          <span>
-            ${client.name}
-          </span>
-          <span>
-            ${client.age}
-          </span>
-          <span>
-            ${client.gender}
-          </span>
-          <span>
-            <button >
-              delete
-            <button/>
-          </span>
-        </li>`,
-      ).appendTo("#clients-list");
-    });
-  });
-  $("#add-client").click(() => {
-    const client = {
-      name: $("#name").val(),
-      age: $("#age").val(),
-      gender: $("#gender").val(),
-      phone: $("#phone").val(),
-      address: $("#address").val(),
-    };
-    $.post("add_client.php", client, (_) => {
-      $(
-        `<li>
-          <span>
-            ${client.name}
-          </span>
-          <span>
-            ${client.age}
-          </span>
-          <span>
-            ${client.gender}
-          </span>
-          <span>
-            <button >
-              delete
-            <button/>
-          </span>
-        </li>`,
-      ).appendTo("#clients-list");
-    });
+  const data = [
+    { year: 2010, count: 10 },
+    { year: 2011, count: 20 },
+    { year: 2012, count: 30 },
+    { year: 2013, count: 40 },
+    { year: 2014, count: 50 },
+    { year: 2015, count: 60 },
+    { year: 2016, count: 70 },
+    { year: 2017, count: 80 },
+    { year: 2018, count: 90 },
+    { year: 2019, count: 100 },
+  ];
 
-    $("#name").val("");
-    $("#age").val("");
-    $("#gender").val("");
-    $("#phone").val("");
-    $("#address").val("");
-  });
+
+  const chart1 = new Chart(
+    document.getElementById('user-chart'),
+    {
+      type: 'bar',
+      data: {
+        labels: data.map(row => row.year),
+        datasets: [
+          {
+            label: 'Teste de gráfico de barras',
+            data: data.map(row => row.count)
+          }
+        ]
+      }
+    }
+  );
+
+  const chart2 = new Chart(
+    document.getElementById('user-chart-2'),
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => row.year),
+        datasets: [
+          {
+            label: 'Teste de gráfico de linhas',
+            data: data.map(row => row.count)
+          }
+        ]
+      }
+    }
+  );
 });
