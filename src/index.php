@@ -40,13 +40,16 @@ if (!isset($_SESSION["userID"])) {
                 <h1 class="text-xl font-bold">Fitsystem</h1>
             </div>
             <nav class="flex items-center gap-4">
-                <a class="hover:underline" href="/clients.php">
+                <a class="underline" href="#">
+                    Home
+                </a>
+                <a class="hover:underline" href="/fitsystem/clients.php">
                     Clientes
                 </a>
-                <a class="hover:underline" href="/classes.php">
+                <a class="hover:underline" href="/fitsystem/classes.php">
                     Aulas
                 </a>
-                <a class="hover:underline" href="/progress.php">
+                <a class="hover:underline" href="/fitsystem/progress.php">
                     Progresso
                 </a>
             </nav>
@@ -55,7 +58,7 @@ if (!isset($_SESSION["userID"])) {
             <section class="bg-white rounded-lg shadow-md p-6 space-y-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-bold">Clientes</h2>
-                    <a class="text-blue-500 hover:underline" href="#">
+                    <a class="text-blue-500 hover:underline" href="/fitsystem/clients.php">
                         Ver todos
                     </a>
                 </div>
@@ -94,7 +97,7 @@ if (!isset($_SESSION["userID"])) {
             <section class="bg-white rounded-lg shadow-md p-6 space-y-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-bold">Aulas</h2>
-                    <a class="text-blue-500 hover:underline" href="#">
+                    <a class="text-blue-500 hover:underline" href="/fitsystem/classes.php">
                         Veja todas
                     </a>
                 </div>
@@ -158,7 +161,7 @@ if (!isset($_SESSION["userID"])) {
             <section class="bg-white rounded-lg shadow-md p-6 space-y-4">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg font-bold">Progresso do Cliente</h2>
-                    <a class="text-blue-500 hover:underline" href="#">
+                    <a class="text-blue-500 hover:underline" href="/fitsystem/progress.php">
                         Veja os relatórios
                     </a>
                 </div>
