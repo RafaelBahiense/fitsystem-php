@@ -22,6 +22,7 @@ if (!isset($_SESSION["userID"])) {
     integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="progress.js"></script>
+  <script src="menu.js"></script>
 </head>
 
 <body>
@@ -53,17 +54,20 @@ if (!isset($_SESSION["userID"])) {
         <a class="underline" href="#">
           Progresso
         </a>
-        <button class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10 rounded-full">
-          <img
-            src="/fitsystem/placeholder.svg"
-            width="32"
-            height="32"
-            class="rounded-full"
-            alt="Avatar"
-            style="aspect-ratio:32/32;object-fit:cover"
-          />
-          <span class="sr-only">Abrir menu de usuario</span>
-        </button>
+        <div class="relative inline-block text-left">
+          <div>
+            <button type="button" id="menu-button" >
+              <img src='/fitsystem/placeholder.svg' width='40' height='40' class='rounded-full' alt='Client Avatar' style='aspect-ratio:40/40;object-fit:cover' />
+            </button>
+          </div>
+          <div id="menu-toggle" style="display: none">
+            <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+              <div class="py-1" role="none">
+                <span id="menu-item-logout" class="text-gray-700 block px-4 py-2 text-sm" id="menu-item-logout">Logout</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </nav>
     </header>
     <main class="flex-1 p-6">

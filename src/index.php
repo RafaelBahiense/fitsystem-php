@@ -20,6 +20,7 @@ if (!isset($_SESSION["userID"])) {
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="index.js" ></script>
+    <script src="menu.js"></script>
 </head>
 
 <body>
@@ -52,6 +53,20 @@ if (!isset($_SESSION["userID"])) {
                 <a class="hover:underline" href="/fitsystem/progress.php">
                     Progresso
                 </a>
+                <div class="relative inline-block text-left">
+                    <div>
+                        <button type="button" id="menu-button" >
+                            <img src='/fitsystem/placeholder.svg' width='40' height='40' class='rounded-full' alt='Client Avatar' style='aspect-ratio:40/40;object-fit:cover' />
+                        </button>
+                    </div>
+                    <div id="menu-toggle" style="display: none">
+                        <div class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+                            <div class="py-1" role="none">
+                                <span id="menu-item-logout" class="text-gray-700 block px-4 py-2 text-sm" id="menu-item-logout">Logout</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </nav>
         </header>
         <main class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
