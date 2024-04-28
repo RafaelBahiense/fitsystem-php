@@ -1,9 +1,9 @@
 {
-  "name": "rafaelbrasal/php-test",
+  "name": "rafaelbrasal/firsystem-php",
   "type": "project",
   "autoload": {
     "psr-4": {
-      "Rafaelbrasal\\PhpTest\\": "src/"
+      "Rafaelbrasal\\FitsystemPHP\\": "src/"
     }
   },
   "authors": [
