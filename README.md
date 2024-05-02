@@ -20,7 +20,7 @@ O Fitsystem é uma aplicação web desenvolvida para gerenciar clientes, aulas e
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://seu-repositorio/fitsystem.git
+   git clone https://github.com/RafaelBahiense/fitsystem-php
    ```
 2. **Navegue até o diretório do projeto:**
    ```bash
