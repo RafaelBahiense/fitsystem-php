@@ -6,6 +6,8 @@
   "scripts": {
     "link:xampp:linux": "sudo ln -sfn $(pwd)/src /opt/lampp/htdocs/fitsystem",
     "unlink:xampp:linux": "sudo unlink /opt/lampp/htdocs/fitsystem",
+    "link:xampp:windows": "node link-xampp-windows.js",
+    "unlink:xampp:windows": "node unlink-xampp-windows.js",
     "set:perms": "chmod -R 755 src",
     "stop:apache": "sudo service apache2 stop",
     "format": "npx prettier src/**/* --write --config prettierc.json --log-level debug",
