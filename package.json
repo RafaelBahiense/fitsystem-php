@@ -8,9 +8,10 @@
     "unlink:xampp:linux": "sudo unlink /opt/lampp/htdocs/fitsystem",
     "link:xampp:windows": "node link-xampp-windows.js",
     "unlink:xampp:windows": "node unlink-xampp-windows.js",
+    "open:xampp:linux": "sudo /opt/lampp/manager-linux-x64.run",
     "set:perms": "chmod -R 755 src",
-    "stop:apache": "sudo service apache2 stop",
-    "format": "npx prettier src/**/* --write --config prettierc.json --log-level debug",
+    "stop:apache": "sudo systemctl stop apache2.service",
+    "format": "npx prettier src/**/* --write --config .prettierrc.js",
     "watch:tailwind": "npx tailwindcss -i ./src/input.css -o ./src/output.css --watch"
   },
   "author": "",
