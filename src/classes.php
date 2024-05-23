@@ -92,50 +92,19 @@ if (!isset($_SESSION["userID"])) {
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-gray-200">
-                <td class="px-4 py-2 text-left">1</td>
-                <td class="px-4 py-2 text-left">Musculação</td>
-                <td class="px-4 py-2 text-left">Segunda e Quarta 08:00</td>
-                <td class="px-4 py-2 text-left">
-                  <div class="flex items-center gap-1 text-yellow-500">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                          stroke-linejoin="round" class="h-4 w-4">
-                          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                          <circle cx="9" cy="7" r="4"></circle>
-                          <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
-                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                      </svg>
-                      <span>10/20 Inscritos</span>
-                  </div>
-                </td>
-                <td class="px-4 py-2 text-left">Ativo</td>
-                <td class="px-4 py-2 text-left">
-                  <div class='flex items-center gap-2'>
-                    <div class='flex items-center gap-2'>
-                      <button
-                        class='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10'>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'
-                          stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                          class='h-4 w-4'>
-                          <path d='M4 13.5V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2h-5.5'></path>
-                          <polyline points='14 2 14 8 20 8'></polyline>
-                          <path d='M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z'></path>
-                        </svg>
-                      </button>
-                      <button
-                        class='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10'>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'
-                          stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'
-                          class='h-4 w-4'>
-                          <path d='M3 6h18'></path>
-                          <path d='M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6'></path>
-                          <path d='M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2'></path>
-                        </svg>
-                      </button>
-                    </div>
-                </td>
-              </tr>
+              <?php
+                require "database.php";
+                include "./components/class.row.php";
+                try {
+                    $stmt = $conn->query("SELECT * FROM class");
+                    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($tasks as $task) {
+                      echo classRowComponent($task);
+                    }
+                } catch (PDOException $e) {
+                    echo json_encode(["error" => $e->getMessage()]);
+                }
+                ?>
               <tr class="border-b border-gray-200">
                 <td class="px-4 py-2 text-left">2</td>
                 <td class="px-4 py-2 text-left">Crossfit</td>
@@ -289,15 +258,6 @@ if (!isset($_SESSION["userID"])) {
         <div>
             <label class="block text-sm font-medium text-gray-700">Hora do Dia</label>
             <select name="time" id="time" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                <option value="00:00">00:00</option>
-                <option value="01:00">01:00</option>
-                <option value="02:00">02:00</option>
-                <option value="03:00">03:00</option>
-                <option value="04:00">04:00</option>
-                <option value="05:00">05:00</option>
-                <option value="06:00">06:00</option>
-                <option value="07:00">07:00</option>
-                <option value="08:00">08:00</option>
                 <option value="09:00">09:00</option>
                 <option value="10:00">10:00</option>
                 <option value="11:00">11:00</option>
@@ -312,7 +272,6 @@ if (!isset($_SESSION["userID"])) {
                 <option value="20:00">20:00</option>
                 <option value="21:00">21:00</option>
                 <option value="22:00">22:00</option>
-                <option value="23:00">23:00</option>
             </select>
         </div>
         <div class="flex justify-end">
