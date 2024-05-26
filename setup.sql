@@ -8,18 +8,21 @@ CREATE TABLE `admin` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
 DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `age` int NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `date_of_birth` date NOT NULL,
   `gender` enum('Male','Female','Other') NOT NULL,
   `phone` varchar(20) NOT NULL,
+  `photo` mediumtext NULL,
   `address` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
+
 
 DROP TABLE IF EXISTS `client_health_metrics`;
 CREATE TABLE `client_health_metrics` (

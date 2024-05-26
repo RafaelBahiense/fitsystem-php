@@ -7,6 +7,12 @@ if (!isset($_SESSION["userID"])) {
 }
 ?>
 
+<?php
+require_once "database/db_context.php";
+$db = new DbContext();
+$conn = $db->connect();
+?>
+
 <!doctype html>
 <html lang="pt-BR">
 
@@ -84,14 +90,12 @@ if (!isset($_SESSION["userID"])) {
             </div>
             <div class="space-y-2">
                 <?php
-                require "database.php";
                 require_once "components/client.row.php";
 
                 try {
-                    $stmt = $conn->query("SELECT * FROM client");
-                    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($tasks as $task) {
-                        echo clientRowComponent($task, "light");
+                    $results = $conn->query("SELECT * FROM client");
+                    foreach ($results as $result) {
+                        echo clientRowComponent($result);
                     }
                 } catch (PDOException $e) {
                     echo json_encode(["error" => $e->getMessage()]);
@@ -108,14 +112,12 @@ if (!isset($_SESSION["userID"])) {
             </div>
             <div class="space-y-2">
                 <?php
-                require "database.php";
                 require_once "components/class.row.php";
 
                 try {
-                    $stmt = $conn->query("SELECT * FROM class");
-                    $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($tasks as $task) {
-                        echo classRowComponent($task, "light");
+                    $results = $conn->query("SELECT * FROM class");
+                    foreach ($results as $result) {
+                        echo classRowComponent($result, "light");
                     }
                 } catch (PDOException $e) {
                     echo json_encode(["error" => $e->getMessage()]);
