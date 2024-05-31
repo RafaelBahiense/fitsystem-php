@@ -134,91 +134,43 @@
             </div>
         </div>
         <div id="class-schedules-modal" class="hidden fixed inset-0 bg-gray-500 bg-opacity-75 items-center justify-center">
-            <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+            <div class="bg-white p-8 rounded-lg shadow-lg max-w-[70%] w-full">
                 <div class="flex justify-end">
-                    <button id="close-class-modal" class="text-gray-500 hover:text-gray-800">
+                    <button id="close-class-schedule-modal" class="text-gray-500 hover:text-gray-800">
                         <i data-lucide="x"></i>
                     </button>
                 </div>
                 <form id="classForm" class="space-y-6">
-                    <h2 class="text-lg font-bold text-center">Informações da Aula</h2>
+                    <h2 class="text-lg font-bold text-center">Horários da Aula</h2>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Nome</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            required
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        />
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Descrição</label>
-                        <textarea
-                            name="description"
-                            id="description"
-                            rows="3"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        ></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Dias da Semana</label>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Seg" />
-                                <span class="ml-2">Seg</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Ter" />
-                                <span class="ml-2">Ter</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Qua" />
-                                <span class="ml-2">Qua</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Qui" />
-                                <span class="ml-2">Qui</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Sex" />
-                                <span class="ml-2">Sex</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Sáb" />
-                                <span class="ml-2">Sáb</span>
-                            </label>
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" class="form-checkbox" name="weekdays" value="Dom" />
-                                <span class="ml-2">Dom</span>
-                            </label>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Hora do Dia</label>
-                        <select name="time" id="time" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                            <option value="09:00">09:00</option>
-                            <option value="10:00">10:00</option>
-                            <option value="11:00">11:00</option>
-                            <option value="12:00">12:00</option>
-                            <option value="13:00">13:00</option>
-                            <option value="14:00">14:00</option>
-                            <option value="15:00">15:00</option>
-                            <option value="16:00">16:00</option>
-                            <option value="17:00">17:00</option>
-                            <option value="18:00">18:00</option>
-                            <option value="19:00">19:00</option>
-                            <option value="20:00">20:00</option>
-                            <option value="21:00">21:00</option>
-                            <option value="22:00">22:00</option>
-                        </select>
+                      <table class="w-full table-auto">
+                          <thead>
+                              <tr class="bg-gray-100 text-gray-600">
+                                  <th class="px-4 py-2 text-left">Dia</th>
+                                  <th class="px-4 py-2 text-left">09:00</th>
+                                  <th class="px-4 py-2 text-left">10:00</th>
+                                  <th class="px-4 py-2 text-left">11:00</th>
+                                  <th class="px-4 py-2 text-left">12:00</th>
+                                  <th class="px-4 py-2 text-left">13:00</th>
+                                  <th class="px-4 py-2 text-left">14:00</th>
+                                  <th class="px-4 py-2 text-left">15:00</th>
+                                  <th class="px-4 py-2 text-left">16:00</th>
+                                  <th class="px-4 py-2 text-left">17:00</th>
+                                  <th class="px-4 py-2 text-left">18:00</th>
+                                  <th class="px-4 py-2 text-left">19:00</th>
+                                  <th class="px-4 py-2 text-left">20:00</th>
+                                  <th class="px-4 py-2 text-left">21:00</th>
+                                  <th class="px-4 py-2 text-left">22:00</th>
+                              </tr>
+                          </thead>
+                          <tbody id="class-schedules-table-body"></tbody> 
                     </div>
                     <div class="flex justify-end">
                         <button
-                            type="submit"
+                            id="submit-class-schedules"
                             class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-white hover:bg-primary/90 h-10 px-4 py-2 w-full"
                         >
-                            Cadastrar Aula
+                            Cadastrar Horários
                         </button>
                     </div>
                 </form>
