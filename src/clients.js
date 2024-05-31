@@ -39,7 +39,7 @@ $(document).ready(() => {
         if (file) {
             if (file.size > MAX_FILE_SIZE) {
                 alert('File size exceeds 2 MB.');
-                photoInput.value = ''; // Clear the input
+                photoInput.value = '';
                 photoPreview.src = '#';
                 photoPreview.classList.add('hidden');
                 return;
@@ -57,6 +57,18 @@ $(document).ready(() => {
             url: `client.php?page=${page}&limit=${limit}`,
             method: 'GET',
             success: response => {
+                if (response.redirect) {
+                    window.location.href = response.redirect;
+                    return;
+                }
+
+                if (response.length === 0) {
+                    const tableBody = $('#client-table-body');
+                    tableBody.empty();
+                    tableBody.append('<tr><td colspan="6" class="px-4 py-2 text-center">Nenhum cliente cadastrado.</td></tr>');
+                    return;
+                }
+
                 CLIENTS_ARRAY = response;
                 const tableBody = $('#client-table-body');
                 tableBody.empty();
@@ -65,7 +77,14 @@ $(document).ready(() => {
                         <tr class='border-b'>
                             <td class='px-4 py-2'>
                                 <div class='flex items-center gap-2'>
-                                    <img src='${client.photo ? client.photo : '/fitsystem/placeholder.webp'}' width='40' height='40' class='rounded-full' alt='Client Avatar' style='aspect-ratio:40/40;object-fit:cover' />
+                                    <img 
+                                        src='${client.photo ? client.photo : '/fitsystem/placeholder.webp'}'
+                                        width='40'
+                                        height='40'
+                                        class='rounded-full'
+                                        alt='Client Avatar'
+                                        style='aspect-ratio:40/40;object-fit:cover'
+                                    />
                                 </div>
                             </td>
                             <td class='px-4 py-2'>${client.name}</td>
@@ -74,19 +93,19 @@ $(document).ready(() => {
                             <td class='px-4 py-2'>Ativo</td>
                             <td class='px-4 py-2'>
                                 <div class='flex items-center gap-2'>
-                                    <button class='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10' onclick="editClient(${client.id})">
-                                        <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='h-4 w-4'>
-                                            <path d='M4 13.5V4a2 2 0 0 1 2-2h8.5L20 7.5V20a2 2 0 0 1-2 2h-5.5'></path>
-                                            <polyline points='14 2 14 8 20 8'></polyline>
-                                            <path d='M10.42 12.61a2.1 2.1 0 1 1 2.97 2.97L7.95 21 4 22l.99-3.95 5.43-5.44Z'></path>
-                                        </svg>
+                                    <button
+                                        title='Editar'
+                                        class='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input h-10 w-10 hover:cursor-pointer'
+                                        onclick="editClient(${client.id})"
+                                    >
+                                        <i data-lucide='file-pen'></i> 
                                     </button>
-                                    <button class='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10' onclick="deleteClient(${client.id})">
-                                        <svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='h-4 w-4'>
-                                            <path d='M3 6h18'></path>
-                                            <path d='M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6'></path>
-                                            <path d='M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2'></path>
-                                        </svg>
+                                    <button
+                                        title='Excluir'
+                                        class='inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium border border-input h-10 w-10 hover:cursor-pointer' 
+                                        onclick="deleteClient(${client.id})"
+                                    >
+                                        <i data-lucide='trash'></i> 
                                     </button>
                                 </div>
                             </td>
@@ -94,6 +113,8 @@ $(document).ready(() => {
                     `;
                     tableBody.append(row);
                 });
+
+                lucide.createIcons();
             },
             error: error => {
                 console.error('Error fetching clients:', error);
@@ -112,7 +133,7 @@ $(document).ready(() => {
         $('#phone').val(client.phone);
         $('#gender').val(client.gender).change();
         $('#address').val(client.address);
-        $('#photo-preview').attr('src', client.photo);
+        $('#photo-preview').attr('src', client.photo ? client.photo : '/fitsystem/placeholder.webp');
 
         submitBtn.innerText = 'Atualizar Cliente';
         mode = 'PUT';

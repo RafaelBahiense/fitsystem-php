@@ -1,25 +1,35 @@
-CREATE DATABASE  IF NOT EXISTS `fitsystem`
+CREATE DATABASE IF NOT EXISTS `fitsystem`;
 USE `fitsystem`;
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `username` VARCHAR(255) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
 );
 
 DROP TABLE IF EXISTS `client`;
 CREATE TABLE `client` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `date_of_birth` date NOT NULL,
-  `gender` enum('Male','Female','Other') NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `photo` mediumtext NULL,
-  `address` text NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `date_of_birth` DATE NOT NULL,
+  `gender` ENUM('Male','Female','Other') NOT NULL,
+  `phone` VARCHAR(20) NOT NULL,
+  `photo` MEDIUMTEXT NULL,
+  `address` TEXT NOT NULL,
+  PRIMARY KEY (`id`)
+);
+
+DROP TABLE IF EXISTS `class`;
+CREATE TABLE `class` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NOT NULL,
+  `icon` VARCHAR(255) NOT NULL,
+  `description` TEXT NOT NULL,
+  `status` BOOL NOT NULL,
   PRIMARY KEY (`id`)
 );
 

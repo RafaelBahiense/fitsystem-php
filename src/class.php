@@ -31,7 +31,7 @@ try {
         $limit = isset($_GET["limit"]) ? (int) $_GET["limit"] : 10;
         $offset = ($page - 1) * $limit;
 
-        $stmt = $connection->prepare("SELECT * FROM client LIMIT ? OFFSET ?");
+        $stmt = $connection->prepare("SELECT * FROM class LIMIT ? OFFSET ?");
         if ($stmt === false) {
             echo json_encode(["error" => $connection->error]);
             http_response_code(500);
@@ -42,88 +42,43 @@ try {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $clients = [];
+        $classes = [];
         while ($row = $result->fetch_assoc()) {
-            if (isset($row["date_of_birth"])) {
-                $row["dateOfBirth"] = $row["date_of_birth"];
-                unset($row["date_of_birth"]);
-            }
-
-            $clients[] = $row;
+            $classes[] = $row;
         }
 
-        echo json_encode($clients);
+        echo json_encode($classes);
 
         $stmt->close();
     } elseif ($method == "POST") {
         $data = json_decode(file_get_contents("php://input"), true);
         $name = $data["name"];
-        $dateOfBirth = $data["dateOfBirth"];
-        $email = $data["email"];
-        $gender = $data["gender"];
-        $phone = $data["phone"];
-        $address = $data["address"];
-        $photo = $data["photo"];
+        $icon = $data["icon"];
+        $description = $data["description"];
+        $status = $data["status"];
 
         if (
             empty($name) ||
-            empty($dateOfBirth) ||
-            empty($email) ||
-            empty($gender) ||
-            empty($phone) ||
-            empty($address)
+            empty($icon) ||
+            empty($description) ||
+            empty($status)
         ) {
             echo json_encode(["error" => "Preencha todos os campos"]);
             http_response_code(400);
             exit();
         }
 
-        if (empty($photo)) {
-            // Prepare the SQL statement without the photo column
-            $stmt = $connection->prepare(
-                "INSERT INTO client (name, date_of_birth, gender, email, phone, address) VALUES (?, ?, ?, ?, ?, ?)"
-            );
+        $stmt = $connection->prepare(
+            "INSERT INTO class (name, icon, description, status) VALUES (?, ?, ?, ?)"
+        );
 
-            if ($stmt === false) {
-                echo json_encode(["error" => $connection->error]);
-                http_response_code(500);
-                exit();
-            }
-
-            // Bind the parameters without the photo
-            $stmt->bind_param(
-                "ssssss",
-                $name,
-                $dateOfBirth,
-                $gender,
-                $email,
-                $phone,
-                $address
-            );
-        } else {
-            // Prepare the SQL statement with the photo column
-            $stmt = $connection->prepare(
-                "INSERT INTO client (name, date_of_birth, gender, email, phone, address, photo) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            );
-
-            if ($stmt === false) {
-                echo json_encode(["error" => $connection->error]);
-                http_response_code(500);
-                exit();
-            }
-
-            // Bind the parameters including the photo
-            $stmt->bind_param(
-                "sssssss",
-                $name,
-                $dateOfBirth,
-                $gender,
-                $email,
-                $phone,
-                $address,
-                $photo
-            );
+        if ($stmt === false) {
+            echo json_encode(["error" => $connection->error]);
+            http_response_code(500);
+            exit();
         }
+
+        $stmt->bind_param("ssss", $name, $icon, $description, $status);
 
         if ($stmt->execute()) {
             $clientId = $connection->insert_id;
@@ -144,21 +99,16 @@ try {
 
         $id = $data["id"];
         $name = $data["name"];
-        $dateOfBirth = $data["dateOfBirth"];
-        $email = $data["email"];
-        $gender = $data["gender"];
-        $phone = $data["phone"];
-        $address = $data["address"];
-        $photo = $data["photo"];
+        $icon = $data["icon"];
+        $description = $data["description"];
+        $status = $data["status"];
 
         if (
             empty($id) ||
             empty($name) ||
-            empty($dateOfBirth) ||
-            empty($email) ||
-            empty($gender) ||
-            empty($phone) ||
-            empty($address)
+            empty($icon) ||
+            empty($description) ||
+            empty($status)
         ) {
             // tel witch field is empty
             echo json_encode(["error" => "Preencha todos os campos"]);
@@ -167,7 +117,7 @@ try {
         }
 
         $stmt = $connection->prepare(
-            "UPDATE client SET name = ?, date_of_birth = ?, email = ?, gender = ?, phone = ?, address = ? WHERE id = ?"
+            "UPDATE class SET name = ?, icon = ?, description = ?, status = ? WHERE id = ?"
         );
 
         if ($stmt === false) {
@@ -176,19 +126,10 @@ try {
             exit();
         }
 
-        $stmt->bind_param(
-            "ssssssi",
-            $name,
-            $dateOfBirth,
-            $email,
-            $gender,
-            $phone,
-            $address,
-            $id
-        );
+        $stmt->bind_param("sssii", $name, $icon, $description, $status, $id);
 
         if ($stmt->execute()) {
-            echo json_encode(["message" => "Client updated successfully"]);
+            echo json_encode(["message" => "Class updated successfully"]);
         } else {
             echo json_encode(["error" => $stmt->error]);
             http_response_code(500);
@@ -206,7 +147,7 @@ try {
             exit();
         }
 
-        $stmt = $connection->prepare("DELETE FROM client WHERE id = ?");
+        $stmt = $connection->prepare("DELETE FROM class WHERE id = ?");
 
         if ($stmt === false) {
             echo json_encode(["error" => $connection->error]);
@@ -217,7 +158,7 @@ try {
         $stmt->bind_param("i", $id);
 
         if ($stmt->execute()) {
-            echo json_encode(["message" => "Client deleted successfully"]);
+            echo json_encode(["message" => "Class deleted successfully"]);
         } else {
             echo json_encode(["error" => $stmt->error]);
         }

@@ -52,10 +52,10 @@ $conn = $db->connect();
             <a class="underline" href="#">
                 Home
             </a>
-            <a class="hover:underline" href="/fitsystem/clients.php">
+            <a class="hover:underline" href="/fitsystem/clients.html">
                 Clientes
             </a>
-            <a class="hover:underline" href="/fitsystem/classes.php">
+            <a class="hover:underline" href="/fitsystem/classes.html">
                 Aulas
             </a>
             <a class="hover:underline" href="/fitsystem/progress.php">

@@ -27,32 +27,13 @@
         <div class="flex flex-col min-h-screen">
             <header class="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
                 <div class="flex items-center gap-4">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        class="h-6 w-6"
-                    >
-                        <path d="m6.5 6.5 11 11"></path>
-                        <path d="m21 21-1-1"></path>
-                        <path d="m3 3 1 1"></path>
-                        <path d="m18 22 4-4"></path>
-                        <path d="m2 6 4-4"></path>
-                        <path d="m3 10 7-7"></path>
-                        <path d="m14 21 7-7"></path>
-                    </svg>
+                    <i data-lucide="dumbbell"></i>
                     <h1 class="text-xl font-bold">Fitsystem</h1>
                 </div>
                 <nav class="flex items-center gap-4">
                     <a class="hover:underline" href="/fitsystem/">Home</a>
                     <a class="underline" href="#">Clientes</a>
-                    <a class="hover:underline" href="/fitsystem/classes.php">Aulas</a>
+                    <a class="hover:underline" href="/fitsystem/classes.html">Aulas</a>
                     <a class="hover:underline" href="/fitsystem/progress.php">Progresso</a>
                     <div class="relative inline-block text-left">
                         <div>
@@ -99,7 +80,11 @@
                                     <th class="px-4 py-2 text-left">Ações</th>
                                 </tr>
                             </thead>
-                            <tbody id="client-table-body"></tbody>
+                            <tbody id="client-table-body">
+                                <tr>
+                                    <td colspan="6" class="px-4 py-2 text-center">Nenhum cliente cadastrado.</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </section>
@@ -111,9 +96,7 @@
             <div class="bg-white p-8 rounded-lg shadow-lg max-w-2xl w-full">
                 <div class="flex justify-end">
                     <button id="close-client-modal" class="text-gray-500 hover:text-gray-800">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
+                        <i data-lucide="x"></i>
                     </button>
                 </div>
                 <form id="clientForm" class="space-y-6">
@@ -214,5 +197,6 @@
                 </form>
             </div>
         </div>
+        <script src="https://unpkg.com/lucide@latest"></script>
     </body>
 </html>
