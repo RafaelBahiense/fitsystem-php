@@ -35,17 +35,7 @@ $conn = $db->connect();
 <div class="flex flex-col min-h-screen">
     <header class="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
         <div class="flex items-center gap-4">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 class="h-6 w-6">
-                <path d="m6.5 6.5 11 11"></path>
-                <path d="m21 21-1-1"></path>
-                <path d="m3 3 1 1"></path>
-                <path d="m18 22 4-4"></path>
-                <path d="m2 6 4-4"></path>
-                <path d="m3 10 7-7"></path>
-                <path d="m14 21 7-7"></path>
-            </svg>
+            <i data-lucide="dumbbell"></i>
             <h1 class="text-xl font-bold">Fitsystem</h1>
         </div>
         <nav class="flex items-center gap-4">
@@ -58,13 +48,16 @@ $conn = $db->connect();
             <a class="hover:underline" href="/fitsystem/classes.html">
                 Aulas
             </a>
+            <a class="hover:underline" href="/fitsystem/attendance.html">
+                Frequência
+            </a>
             <a class="hover:underline" href="/fitsystem/progress.php">
                 Progresso
             </a>
             <div class="relative inline-block text-left">
                 <div>
                     <button type="button" id="menu-button">
-                        <img src='/fitsystem/placeholder.svg' width='40' height='40' class='rounded-full'
+                        <img src='/fitsystem/placeholder.webp' width='40' height='40' class='rounded-full'
                              alt='Client Avatar' style='aspect-ratio:40/40;object-fit:cover'/>
                     </button>
                 </div>
@@ -84,7 +77,7 @@ $conn = $db->connect();
         <section class="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold">Clientes</h2>
-                <a class="text-blue-500 hover:underline" href="/fitsystem/clients.php">
+                <a class="text-blue-500 hover:underline" href="/fitsystem/clients.html">
                     Ver todos
                 </a>
             </div>
@@ -93,7 +86,23 @@ $conn = $db->connect();
                 require_once "components/client.row.php";
 
                 try {
-                    $results = $conn->query("SELECT * FROM client");
+                    $results = $conn->query(
+                        "SELECT
+                            *,
+                            CASE 
+                                WHEN 
+                                    STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(date_of_birth), '-', DAY(date_of_birth)), '%Y-%m-%d') >= CURDATE() 
+                                THEN 
+                                    STR_TO_DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(date_of_birth), '-', DAY(date_of_birth)), '%Y-%m-%d')
+                                ELSE 
+                                    STR_TO_DATE(CONCAT(YEAR(CURDATE()) + 1, '-', MONTH(date_of_birth), '-', DAY(date_of_birth)), '%Y-%m-%d')
+                            END AS next_birthday
+                        FROM 
+                            client
+                        ORDER BY 
+                            next_birthday
+                        LIMIT 10;"
+                    );
                     foreach ($results as $result) {
                         echo clientRowComponent($result);
                     }
@@ -106,7 +115,7 @@ $conn = $db->connect();
         <section class="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold">Aulas</h2>
-                <a class="text-blue-500 hover:underline" href="/fitsystem/classes.php">
+                <a class="text-blue-500 hover:underline" href="/fitsystem/classes.html">
                     Veja todas
                 </a>
             </div>
@@ -115,9 +124,23 @@ $conn = $db->connect();
                 require_once "components/class.row.php";
 
                 try {
-                    $results = $conn->query("SELECT * FROM class");
+                    $results = $conn->query(
+                        "SELECT 
+                          c.*,
+                          COUNT(cs.id) AS subscription_count
+                      FROM 
+                          class c
+                      LEFT JOIN 
+                          class_subscription cs ON c.id = cs.class_id
+                      GROUP BY 
+                          c.id, c.name, c.icon, c.description, c.status
+                      ORDER BY 
+                          subscription_count
+                      DESC
+                      LIMIT 10;"
+                    );
                     foreach ($results as $result) {
-                        echo classRowComponent($result, "light");
+                        echo classRowComponent($result);
                     }
                 } catch (PDOException $e) {
                     echo json_encode(["error" => $e->getMessage()]);
@@ -152,7 +175,11 @@ $conn = $db->connect();
             </div>
         </section>
     </main>
-</div>
+    </div>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
+    </script>
 </body>
 
 </html>
