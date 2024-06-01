@@ -38,7 +38,7 @@ CREATE TABLE `class_schedule` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `class_id` INT NOT NULL,
   `weekday` ENUM('Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
-  `hour` ENUM('09:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00') NOT NULL,
+  `hour` ENUM('09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00') NOT NULL,
   PRIMARY KEY (`id`),
   KEY `class_id` (`class_id`),
   CONSTRAINT `class_schedule_fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE,

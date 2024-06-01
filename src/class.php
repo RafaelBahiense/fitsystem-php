@@ -47,6 +47,24 @@ try {
             $classes[] = $row;
         }
 
+        // This is terrible, but it's just a colegue project
+        foreach ($classes as $key => $class) {
+            $stmt = $connection->prepare(
+                "SELECT * FROM class_schedule WHERE class_id = ?"
+            );
+            $stmt->bind_param("i", $class["id"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $class["schedules"] = [];
+            while ($row = $result->fetch_assoc()) {
+                unset($row["class_id"]);
+                $class["schedules"][] = $row;
+            }
+
+            $classes[$key] = $class;
+        }
+
         echo json_encode($classes);
 
         $stmt->close();

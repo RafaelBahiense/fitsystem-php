@@ -1,12 +1,12 @@
 $(document).ready(() => {
     const WEEK_DAYS = Object.freeze([
-        { name: 'Domingo', value: 'Sunday' },
-        { name: 'Segunda', value: 'Monday' },
-        { name: 'Terça', value: 'Tuesday' },
-        { name: 'Quarta', value: 'Wednesday' },
-        { name: 'Quinta', value: 'Thursday' },
-        { name: 'Sexta', value: 'Friday' },
-        { name: 'Sábado', value: 'Saturday' },
+        { name: 'Domingo', value: 'Sunday', letter: 'D' },
+        { name: 'Segunda', value: 'Monday', letter: 'S' },
+        { name: 'Terça', value: 'Tuesday', letter: 'T' },
+        { name: 'Quarta', value: 'Wednesday', letter: 'Q' },
+        { name: 'Quinta', value: 'Thursday', letter: 'Q' },
+        { name: 'Sexta', value: 'Friday', letter: 'S' },
+        { name: 'Sábado', value: 'Saturday', letter: 'S' },
     ]);
     const HOURS_OF_DAY = Object.freeze(['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00']);
 
@@ -17,14 +17,15 @@ $(document).ready(() => {
     const classModal = $('#class-modal');
     const openClassModalBtn = $('#add-class');
     const closeClassModalBtn = $('#close-class-modal');
-    const closeClassScheduleModalBtn = $('#close-class-schedule-modal');
     const classModalSubmitBtn = $('#submit-class');
+
+    const closeClassScheduleModalBtn = $('#close-class-schedule-modal');
+
     const selectedIconContainer = $('#selected-icon-container');
 
     initializeEventListeners();
     getIcons();
     fetchClasses();
-    renderScheduleTable();
 
     function initializeEventListeners() {
         openClassModalBtn.click(openClassModal);
@@ -36,6 +37,7 @@ $(document).ready(() => {
             }
         });
         $('#classForm').on('submit', handleFormSubmit);
+        $('#classSchedulesForm').on('submit', handleScheduleSubmit);
     }
 
     function openClassModal() {
@@ -68,6 +70,30 @@ $(document).ready(() => {
             },
             error: error => {
                 console.error('Error adding client:', error);
+            },
+        });
+    }
+
+    function handleScheduleSubmit(event) {
+        event.preventDefault();
+
+        const data = {
+            classId: $('#class-id-to-schedule').val(),
+            schedules: classesArray.find(classRow => classRow.id == $('#class-id-to-schedule').val()).schedules,
+        };
+
+        $.ajax({
+            url: 'class_schedule.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: _ => {
+                console.log('Class schedule added successfully');
+                $('#class-schedules-modal').css('display', 'none');
+                fetchClasses();
+            },
+            error: error => {
+                console.error('Error adding class_schedule:', error);
             },
         });
     }
@@ -143,7 +169,19 @@ $(document).ready(() => {
 
             const iconCell = $('<td>').addClass('px-4 py-2 text-left').append($('<i>').attr('data-lucide', classRow.icon));
             const nameCell = $('<td>').addClass('px-4 py-2 text-left').text(classRow.name);
-            const scheduleCell = $('<td>').addClass('px-4 py-2 text-left').text('Terça e Quinta 18:00');
+            const scheduleCell = $('<td>').addClass('px-4 py-2 text-left');
+
+            WEEK_DAYS.forEach(day => {
+                const dayIndicator = $('<span>').text(day.letter).addClass('text-md font-bold rounded-full px-2 py-1 mr-1');
+                const hasDay = classRow.schedules.some(schedule => schedule.weekday === day.value);
+                if (hasDay) {
+                    dayIndicator.addClass('bg-green-500 text-white');
+                } else {
+                    dayIndicator.addClass('bg-gray-200 text-gray-500');
+                }
+                scheduleCell.append(dayIndicator);
+            });
+
             const subscribersCell = $('<td>')
                 .addClass('px-4 py-2 text-left')
                 .append($('<div>').addClass('flex items-center gap-1 text-green-500').append($('<i>').attr('data-lucide', 'users')).append($('<span>').text('15/20 Inscritos')));
@@ -238,8 +276,9 @@ $(document).ready(() => {
         });
     }
 
-    function renderScheduleTable() {
+    function renderScheduleTable(classId) {
         const tableBody = $('#class-schedules-table-body');
+        const classRow = classesArray.find(classRow => classRow.id === classId);
         tableBody.html('');
 
         WEEK_DAYS.forEach(day => {
@@ -251,6 +290,12 @@ $(document).ready(() => {
             HOURS_OF_DAY.forEach(hour => {
                 const hourCell = $('<td>').addClass('px-4 py-2 text-left');
                 const input = $('<input>').attr('type', 'checkbox').attr('name', `${day.value}-${hour}`);
+                const checked = classRow.schedules.find(schedule => schedule.weekday === day.value && schedule.hour === hour);
+                if (checked) {
+                    input.attr('checked', 'checked');
+                }
+                input.attr('value', `${day.value}-${hour}`);
+                input.attr('onclick', `toggleSchedule('${classRow.id}-${day.value}-${hour}')`);
                 hourCell.append(input);
                 row.append(hourCell);
             });
@@ -259,7 +304,24 @@ $(document).ready(() => {
         });
     }
 
-    window.openScheduleModal = function () {
+    window.toggleSchedule = function (scheduleStr) {
+        const [classId, day, hour] = scheduleStr.split('-');
+
+        const classRow = classesArray.find(classRow => classRow.id == classId);
+        const schedule = classRow.schedules.find(schedule => schedule.weekday === day && schedule.hour === hour);
+        if (schedule) {
+            if (schedule.id) schedule.markedForDeletion = true;
+            else classRow.schedules = classRow.schedules.filter(schedule => !(schedule.weekday === day && schedule.hour === hour));
+        } else {
+            classRow.schedules.push({ weekday: day, hour });
+        }
+
+        console.log(classesArray);
+    };
+
+    window.openScheduleModal = function (classId) {
+        $('#class-id-to-schedule').val(classId);
+        renderScheduleTable(classId);
         $('#class-schedules-modal').css('display', 'flex');
     };
 });

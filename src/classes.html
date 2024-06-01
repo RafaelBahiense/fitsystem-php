@@ -68,7 +68,7 @@
                                 <tr class="bg-gray-100 text-gray-600">
                                     <th class="px-4 py-2 text-left"></th>
                                     <th class="px-4 py-2 text-left">Nome</th>
-                                    <th class="px-4 py-2 text-left">Dia e Horário</th>
+                                    <th class="px-4 py-2 text-left">Dias</th>
                                     <th class="px-4 py-2 text-left">Inscritos</th>
                                     <th class="px-4 py-2 text-left">Status</th>
                                     <th class="px-4 py-2 text-left">Ações</th>
@@ -140,35 +140,37 @@
                         <i data-lucide="x"></i>
                     </button>
                 </div>
-                <form id="classForm" class="space-y-6">
+                <form id="classSchedulesForm" class="space-y-6">
                     <h2 class="text-lg font-bold text-center">Horários da Aula</h2>
-                    <div>
-                      <table class="w-full table-auto">
-                          <thead>
-                              <tr class="bg-gray-100 text-gray-600">
-                                  <th class="px-4 py-2 text-left">Dia</th>
-                                  <th class="px-4 py-2 text-left">09:00</th>
-                                  <th class="px-4 py-2 text-left">10:00</th>
-                                  <th class="px-4 py-2 text-left">11:00</th>
-                                  <th class="px-4 py-2 text-left">12:00</th>
-                                  <th class="px-4 py-2 text-left">13:00</th>
-                                  <th class="px-4 py-2 text-left">14:00</th>
-                                  <th class="px-4 py-2 text-left">15:00</th>
-                                  <th class="px-4 py-2 text-left">16:00</th>
-                                  <th class="px-4 py-2 text-left">17:00</th>
-                                  <th class="px-4 py-2 text-left">18:00</th>
-                                  <th class="px-4 py-2 text-left">19:00</th>
-                                  <th class="px-4 py-2 text-left">20:00</th>
-                                  <th class="px-4 py-2 text-left">21:00</th>
-                                  <th class="px-4 py-2 text-left">22:00</th>
-                              </tr>
-                          </thead>
-                          <tbody id="class-schedules-table-body"></tbody> 
+                    <input type="hidden" name="class-id-to-schedule" id="class-id-to-schedule" />
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600">
+                                    <th class="px-4 py-2 text-left">Dia</th>
+                                    <th class="px-4 py-2 text-left">09:00</th>
+                                    <th class="px-4 py-2 text-left">10:00</th>
+                                    <th class="px-4 py-2 text-left">11:00</th>
+                                    <th class="px-4 py-2 text-left">12:00</th>
+                                    <th class="px-4 py-2 text-left">13:00</th>
+                                    <th class="px-4 py-2 text-left">14:00</th>
+                                    <th class="px-4 py-2 text-left">15:00</th>
+                                    <th class="px-4 py-2 text-left">16:00</th>
+                                    <th class="px-4 py-2 text-left">17:00</th>
+                                    <th class="px-4 py-2 text-left">18:00</th>
+                                    <th class="px-4 py-2 text-left">19:00</th>
+                                    <th class="px-4 py-2 text-left">20:00</th>
+                                    <th class="px-4 py-2 text-left">21:00</th>
+                                    <th class="px-4 py-2 text-left">22:00</th>
+                                </tr>
+                            </thead>
+                            <tbody id="class-schedules-table-body"></tbody>
+                        </table>
                     </div>
                     <div class="flex justify-end">
                         <button
                             id="submit-class-schedules"
-                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-white hover:bg-primary/90 h-10 px-4 py-2 w-full"
+                            class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-gray-900 text-white hover:bg-primary/90 h-10 px-4 py-2 w-[200px]"
                         >
                             Cadastrar Horários
                         </button>
