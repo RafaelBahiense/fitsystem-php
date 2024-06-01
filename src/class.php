@@ -63,6 +63,31 @@ try {
             }
 
             $classes[$key] = $class;
+
+            // Ops, I did it again
+            $stmt = $connection->prepare(
+                "SELECT
+                    c.id AS client_id,
+                    c.name AS client_name,
+                    cs.id AS subscription_id
+                FROM 
+                    client c
+                LEFT JOIN 
+                    class_subscription cs ON c.id = cs.client_id AND cs.class_id = ?;"
+            );
+            $stmt->bind_param("i", $class["id"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            $class["subscriptions"] = [];
+            while ($row = $result->fetch_assoc()) {
+                if (empty($row["subscription_id"])) {
+                    unset($row["subscription_id"]);
+                }
+                $class["subscriptions"][] = $row;
+            }
+
+            $classes[$key] = $class;
         }
 
         echo json_encode($classes);

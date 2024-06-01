@@ -44,6 +44,21 @@ CREATE TABLE `class_schedule` (
   CONSTRAINT `class_schedule_fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE,
   UNIQUE KEY `unique_schedule` (`class_id`, `weekday`, `hour`)
 );
+
+DROP TABLE IF EXISTS `class_subscription`;
+CREATE TABLE `class_subscription` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `client_id` INT NOT NULL,
+  `class_id` INT NOT NULL,
+  `subscription_start` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `subscription_end` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unique_client_class` (`client_id`, `class_id`),
+  KEY `client_id` (`client_id`),
+  CONSTRAINT `class_subscription_fk_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE,
+  KEY `class_id` (`class_id`),
+  CONSTRAINT `class_subscription_fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE
+);
   PRIMARY KEY (`id`),
   KEY `client_id` (`client_id`),
   CONSTRAINT `client_health_metrics_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`)

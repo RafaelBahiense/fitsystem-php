@@ -20,6 +20,7 @@ $(document).ready(() => {
     const classModalSubmitBtn = $('#submit-class');
 
     const closeClassScheduleModalBtn = $('#close-class-schedule-modal');
+    const closeClassSubscriptionModalBtn = $('#close-class-subscription-modal');
 
     const selectedIconContainer = $('#selected-icon-container');
 
@@ -31,6 +32,7 @@ $(document).ready(() => {
         openClassModalBtn.click(openClassModal);
         closeClassModalBtn.click(() => classModal.css('display', 'none'));
         closeClassScheduleModalBtn.click(() => $('#class-schedules-modal').css('display', 'none'));
+        closeClassSubscriptionModalBtn.click(() => $('#class-subscription-modal').css('display', 'none'));
         $(window).click(event => {
             if (event.target === classModal[0]) {
                 classModal.css('display', 'none');
@@ -38,6 +40,7 @@ $(document).ready(() => {
         });
         $('#classForm').on('submit', handleFormSubmit);
         $('#classSchedulesForm').on('submit', handleScheduleSubmit);
+        $('#classSubscriptionsForm').on('submit', handleSubscriptionSubmit);
     }
 
     function openClassModal() {
@@ -88,12 +91,34 @@ $(document).ready(() => {
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: _ => {
-                console.log('Class schedule added successfully');
                 $('#class-schedules-modal').css('display', 'none');
                 fetchClasses();
             },
             error: error => {
                 console.error('Error adding class_schedule:', error);
+            },
+        });
+    }
+
+    function handleSubscriptionSubmit(event) {
+        event.preventDefault();
+
+        const data = {
+            classId: $('#class-id-to-subscribe').val(),
+            subscriptions: classesArray.find(classRow => classRow.id == $('#class-id-to-subscribe').val()).subscriptions,
+        };
+
+        $.ajax({
+            url: 'class_subscription.php',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: _ => {
+                $('#class-subscription-modal').css('display', 'none');
+                fetchClasses();
+            },
+            error: error => {
+                console.error('Error adding class_subscription:', error);
             },
         });
     }
@@ -171,6 +196,8 @@ $(document).ready(() => {
             const nameCell = $('<td>').addClass('px-4 py-2 text-left').text(classRow.name);
             const scheduleCell = $('<td>').addClass('px-4 py-2 text-left');
 
+            const subscriptionsCount = classRow.subscriptions.filter(subscription => subscription.subscription_id).length;
+
             WEEK_DAYS.forEach(day => {
                 const dayIndicator = $('<span>').text(day.letter).addClass('text-md font-bold rounded-full px-2 py-1 mr-1');
                 const hasDay = classRow.schedules.some(schedule => schedule.weekday === day.value);
@@ -184,11 +211,17 @@ $(document).ready(() => {
 
             const subscribersCell = $('<td>')
                 .addClass('px-4 py-2 text-left')
-                .append($('<div>').addClass('flex items-center gap-1 text-green-500').append($('<i>').attr('data-lucide', 'users')).append($('<span>').text('15/20 Inscritos')));
+                .append(
+                    $('<div>')
+                        .addClass('flex items-center gap-1')
+                        .append($('<i>').attr('data-lucide', 'users'))
+                        .append($('<span>').text(`${subscriptionsCount} Inscritos`))
+                );
             const statusCell = $('<td>').addClass('px-4 py-2 text-left').text('Ativo');
             const actionsCell = $('<td>').addClass('px-4 py-2 text-left').append($('<div>').addClass('flex items-center gap-2'));
 
             const buttons = [
+                { title: 'Inscritos', icon: 'users', action: `openSubscribersModal(${classRow.id})` },
                 { title: 'Adicionar Horários', icon: 'calendar-plus', action: `openScheduleModal(${classRow.id})` },
                 { title: 'Editar', icon: 'file-pen', action: `editClass(${classRow.id})` },
                 { title: 'Excluir', icon: 'trash', action: `deleteClass(${classRow.id})` },
@@ -304,6 +337,28 @@ $(document).ready(() => {
         });
     }
 
+    function renderSubscribersTable(classId) {
+        const tableBody = $('#class-subscription-table-body');
+        const classRow = classesArray.find(classRow => classRow.id === classId);
+        tableBody.html('');
+
+        classRow.subscriptions.forEach(subscription => {
+            const row = $('<tr>');
+
+            const nameCell = $('<td>').addClass('px-4 py-2 text-left').text(subscription.client_name);
+            const subscriptionCheckbox = $('<input>').attr('type', 'checkbox').attr('name', `subscription-${subscription.client_id}`);
+            if (subscription.subscription_id) {
+                subscriptionCheckbox.attr('checked', 'checked');
+            }
+            subscriptionCheckbox.attr('value', subscription.client_id);
+            subscriptionCheckbox.attr('onclick', `toggleSubscription('${classRow.id}-${subscription.client_id}')`);
+            const subscriptionCell = $('<td>').addClass('px-4 py-2 text-left').append(subscriptionCheckbox);
+
+            row.append(nameCell, subscriptionCell);
+            tableBody.append(row);
+        });
+    }
+
     window.toggleSchedule = function (scheduleStr) {
         const [classId, day, hour] = scheduleStr.split('-');
 
@@ -315,7 +370,22 @@ $(document).ready(() => {
         } else {
             classRow.schedules.push({ weekday: day, hour });
         }
+    };
 
+    window.toggleSubscription = function (subscriptionStr) {
+        const [classId, clientId] = subscriptionStr.split('-');
+
+        const classRow = classesArray.find(classRow => classRow.id == classId);
+        const subscription = classRow.subscriptions.find(subscription => subscription.client_id == clientId);
+        if (subscription) {
+            if (subscription.markedForInsertion) {
+                delete subscription.markedForInsertion;
+            } else if (subscription.subscription_id) {
+                subscription.markedForDeletion = true;
+            } else {
+                subscription.markedForInsertion = true;
+            }
+        }
         console.log(classesArray);
     };
 
@@ -323,5 +393,11 @@ $(document).ready(() => {
         $('#class-id-to-schedule').val(classId);
         renderScheduleTable(classId);
         $('#class-schedules-modal').css('display', 'flex');
+    };
+
+    window.openSubscribersModal = function (classId) {
+        $('#class-id-to-subscribe').val(classId);
+        renderSubscribersTable(classId);
+        $('#class-subscription-modal').css('display', 'flex');
     };
 });
