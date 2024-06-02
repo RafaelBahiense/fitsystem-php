@@ -51,7 +51,7 @@ $conn = $db->connect();
             <a class="hover:underline" href="/fitsystem/attendance.html">
                 Frequência
             </a>
-            <a class="hover:underline" href="/fitsystem/progress.php">
+            <a class="hover:underline" href="/fitsystem/progress.html">
                 Progresso
             </a>
             <div class="relative inline-block text-left">

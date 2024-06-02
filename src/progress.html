@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fitsystem</title>
+        <link rel="stylesheet" href="output.css" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
+            integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="progress.js"></script>
+        <script src="menu.js"></script>
+    </head>
+
+    <body>
+        <div class="flex flex-col min-h-screen">
+            <header class="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <i data-lucide="dumbbell"></i>
+                    <h1 class="text-xl font-bold">Fitsystem</h1>
+                </div>
+                <nav class="flex items-center gap-4">
+                    <a class="hover:underline" href="/fitsystem/"> Home </a>
+                    <a class="hover:underline" href="/fitsystem/clients.html"> Clientes </a>
+                    <a class="hover:underline" href="/fitsystem/classes.html"> Aulas </a>
+                    <a class="hover:underline" href="/fitsystem/attendance.html">Frequência</a>
+                    <a class="underline" href="#"> Progresso </a>
+                    <div class="relative inline-block text-left">
+                        <div>
+                            <button type="button" id="menu-button">
+                                <img src="/fitsystem/placeholder.webp" width="40" height="40" class="rounded-full" alt="Client Avatar" style="aspect-ratio: 40/40; object-fit: cover" />
+                            </button>
+                        </div>
+                        <div id="menu-toggle" style="display: none">
+                            <div
+                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu"
+                                aria-orientation="vertical"
+                                aria-labelledby="menu-button"
+                                tabindex="-1"
+                            >
+                                <div class="py-1" role="none">
+                                    <span id="menu-item-logout" class="text-gray-700 block px-4 py-2 text-sm" id="menu-item-logout">Logout</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <main class="flex-1 p-6">
+                <div class="bg-white rounded-lg shadow-md p-6 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h1 class="text-xl font-bold">Progresso dos Clientes</h1>
+                    </div>
+                    <div id="client-progress-container" class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6"></div>
+                </div>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest"></script>
+    </body>
+</html>
