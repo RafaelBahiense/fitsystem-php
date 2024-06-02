@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Fitsystem</title>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+            integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"
+            integrity="sha512-CQBWl4fJHWbryGE+Pc7UAxWMUMNMWzWxF4SQo9CgkJIN1kx6djDQZjh3Y8SZ1d+6I+1zze6Z7kHXO7q3UyZAWw=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script src="attendance.js"></script>
+        <script src="menu.js"></script>
+    </head>
+
+    <body>
+        <div class="flex flex-col min-h-screen">
+            <header class="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <i data-lucide="dumbbell"></i>
+                    <h1 class="text-xl font-bold">Fitsystem</h1>
+                </div>
+                <nav class="flex items-center gap-4">
+                    <a class="hover:underline" href="/fitsystem/">Home</a>
+                    <a class="Hover:underline" href="/fitsystem/clients.html">Clientes</a>
+                    <a class="hover:underline" href="/fitsystem/classes.html">Aulas</a>
+                    <a class="underline" href="#">Frequência</a>
+                    <a class="hover:underline" href="/fitsystem/progress.php">Progresso</a>
+                    <div class="relative inline-block text-left">
+                        <div>
+                            <button type="button" id="menu-button">
+                                <img src="/fitsystem/placeholder.webp" width="40" height="40" class="rounded-full" alt="Client Avatar" style="aspect-ratio: 40/40; object-fit: cover" />
+                            </button>
+                        </div>
+                        <div id="menu-toggle" style="display: none">
+                            <div
+                                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu"
+                                aria-orientation="vertical"
+                                aria-labelledby="menu-button"
+                                tabindex="-1"
+                            >
+                                <div class="py-1" role="none">
+                                    <span id="menu-item-logout" class="text-gray-700 block px-4 py-2 text-sm" id="menu-item-logout">Logout</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <main class="flex-1">
+                <section class="p-6">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-lg font-bold">Frequência</h2>
+                    </div>
+                    <form class="flex justify-between mt-2 mb-3">
+                        <div class="flex">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 w-48">Aula</label>
+                                <select
+                                    name="class"
+                                    id="class"
+                                    required
+                                    class="h-[42px] mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                >
+                                    <option value="" disabled selected>Selecione uma aula</option>
+                                </select>
+                            </div>
+                            <div class="ml-4">
+                                <label class="block text-sm font-medium text-gray-700 w-48">Data</label>
+                                <input
+                                    type="date"
+                                    name="date"
+                                    id="date"
+                                    disabled
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 bg-gray-100"
+                                />
+                            </div>
+                        </div>
+                    </form>
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto">
+                            <thead>
+                                <tr class="bg-gray-100 text-gray-600">
+                                    <th class="px-4 py-2 text-left">Nome</th>
+                                    <th class="px-4 py-2 text-left">09:00</th>
+                                    <th class="px-4 py-2 text-left">10:00</th>
+                                    <th class="px-4 py-2 text-left">11:00</th>
+                                    <th class="px-4 py-2 text-left">12:00</th>
+                                    <th class="px-4 py-2 text-left">13:00</th>
+                                    <th class="px-4 py-2 text-left">14:00</th>
+                                    <th class="px-4 py-2 text-left">15:00</th>
+                                    <th class="px-4 py-2 text-left">16:00</th>
+                                    <th class="px-4 py-2 text-left">17:00</th>
+                                    <th class="px-4 py-2 text-left">18:00</th>
+                                    <th class="px-4 py-2 text-left">19:00</th>
+                                    <th class="px-4 py-2 text-left">20:00</th>
+                                    <th class="px-4 py-2 text-left">21:00</th>
+                                    <th class="px-4 py-2 text-left">22:00</th>
+                                </tr>
+                            </thead>
+                            <tbody id="client-attendance-table-body">
+                                <tr>
+                                    <td colspan="15" class="px-4 py-72">
+                                        <span class="flex justify-center">
+                                            <i data-lucide="badge-alert"></i>
+                                            <span class="ml-2">Nenhum horário hoje</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script src="https://unpkg.com/lucide@latest"></script>
+    </body>
+</html>

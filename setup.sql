@@ -39,6 +39,8 @@ CREATE TABLE `class_schedule` (
   `class_id` INT NOT NULL,
   `weekday` ENUM('Monday','Tuesday','Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday') NOT NULL,
   `hour` ENUM('09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00') NOT NULL,
+  `schedule_start` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `schedule_end` DATETIME NULL,
   PRIMARY KEY (`id`),
   KEY `class_id` (`class_id`),
   CONSTRAINT `class_schedule_fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE,
@@ -59,7 +61,19 @@ CREATE TABLE `class_subscription` (
   KEY `class_id` (`class_id`),
   CONSTRAINT `class_subscription_fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE
 );
+
+DROP TABLE IF EXISTS `class_attendance`;
+CREATE TABLE `class_attendance` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `client_id` INT NOT NULL,
+  `class_id` INT NOT NULL,
+  `class_schedule_id` INT NOT NULL,
+  `attendance_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `client_id` (`client_id`),
-  CONSTRAINT `client_health_metrics_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `class_attendance_fk_client` FOREIGN KEY (`client_id`) REFERENCES `client` (`id`) ON DELETE CASCADE,
+  KEY `class_id` (`class_id`),
+  CONSTRAINT `class_attendance_fk_class` FOREIGN KEY (`class_id`) REFERENCES `class` (`id`) ON DELETE CASCADE,
+  KEY `class_schedule_id` (`class_schedule_id`),
+  CONSTRAINT `class_attendance_fk_class_schedule` FOREIGN KEY (`class_schedule_id`) REFERENCES `class_schedule` (`id`)
+);
