@@ -151,28 +151,11 @@ $conn = $db->connect();
         <section class="bg-white rounded-lg shadow-md p-6 space-y-4">
             <div class="flex items-center justify-between">
                 <h2 class="text-lg font-bold">Progresso do Cliente</h2>
-                <a class="text-blue-500 hover:underline" href="/fitsystem/progress.php">
+                <a class="text-blue-500 hover:underline" href="/fitsystem/progress.html">
                     Veja os relatórios
                 </a>
             </div>
-            <div class="space-y-4">
-                <div>
-                    <h3 class="font-medium mb-2">Teste</h3>
-                    <div class="aspect-[4/3]">
-                        <div style="width:100%;height:100%">
-                            <canvas id="user-chart"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <h3 class="font-medium mb-2">Teste 2</h3>
-                    <div class="aspect-[4/3]">
-                        <div style="width:100%;height:100%">
-                            <canvas id="user-chart-2"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div id="client-progress-container" class="space-y-4"></div>
         </section>
     </main>
     </div>
