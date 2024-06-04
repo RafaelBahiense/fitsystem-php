@@ -13,7 +13,6 @@ O Fitsystem é uma aplicação web desenvolvida para gerenciar clientes, aulas e
 - PHP (XAMPP recomendado para facilitar a configuração)
 - Apache (XAMPP recomendado para facilitar a configuração)
 - MySQL (XAMPP recomendado para facilitar a configuração)
-- Composer
 - Node.js
 
 ## Instalação
@@ -26,22 +25,19 @@ O Fitsystem é uma aplicação web desenvolvida para gerenciar clientes, aulas e
    ```bash
    cd fitsystem
    ```
-3. **Instale as dependências do PHP via Composer:**
-   ```bash
-   composer install
-   ```
-4. **Instale as dependências de desenvolvimento do Node.js:**
+3. **Instale as dependências de desenvolvimento do Node.js:**
    ```bash
    npm install
    ```
-5. **Configure o banco de dados MySQL:**
+4. **Configure o banco de dados MySQL:**
    - Importe o arquivo `setup.sql` para criar as tabelas necessárias.
-   - Configure o arquivo `src/database.php` com as informações de conexão do seu banco de dados.
+   - Configure o arquivo `src/database/config.php` com as informações de conexão do seu banco de dados.
 
-6. **Link simbólico para o XAMPP:**
+5. **Link simbólico para o XAMPP:**
    - Para usuários de Linux: `npm run link:xampp:linux`
+   - Para usuários de Windows: `npm run link:xampp:windows`
 
-7. **Defina as permissões apropriadas para o diretório `src`:**
+6. **(Linux) Defina as permissões apropriadas para o diretório `src`:**
    ```bash
    npm run set:perms
    ```
@@ -49,8 +45,3 @@ O Fitsystem é uma aplicação web desenvolvida para gerenciar clientes, aulas e
 ## Uso
 
 Inicie o servidor Apache através do XAMPP e acesse o projeto através do navegador em `http://localhost/fitsystem`.
-
-## Scripts Disponíveis
-
-- **npm run format**: Formata o código utilizando Prettier.
-- **npm run watch:tailwind**: Compila o CSS utilizando TailwindCSS em tempo real.
