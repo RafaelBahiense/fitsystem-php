@@ -7,7 +7,7 @@ function classRowComponent($class)
                         <i data-lucide='{icon}' ></i> 
                         <div>
                             <h3 class='font-medium'>{name}</h3>
-                            <p class='text-gray-500 text-sm'>Segunda, 18:00</p>
+                            <p class='text-gray-500 text-sm'>Aula Ativa</p>
                         </div>
                     </div>
                     <div class='flex items-center gap-1'>

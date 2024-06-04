@@ -1,34 +1,61 @@
 <?php
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header(
+    "Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+);
+
 session_start();
 
+$method = $_SERVER["REQUEST_METHOD"];
+
+if (!in_array($method, ["POST"])) {
+    http_response_code(405);
+    exit();
+}
+
+require_once "database/db_context.php";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require "database.php";
+    $db = new DbContext();
+    $connection = $db->connect();
 
-    $username = $_POST["username"];
-    $password = $_POST["password"];
-
-    header("Content-Type: application/json");
+    $data = json_decode(file_get_contents("php://input"), true);
+    $username = $data["username"];
+    $password = $data["password"];
 
     try {
-        $stmt = $conn->prepare(
-            "SELECT * FROM admin WHERE username = :username AND password = :password"
+        $stmt = $connection->prepare(
+            "SELECT * FROM admin WHERE username = ? AND password = ?"
         );
-        $stmt->bindParam(":username", $username);
-        $stmt->bindParam(":password", $password);
-        $stmt->execute();
-        $tasks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        if (count($tasks) > 0) {
-            $_SESSION["userID"] = $tasks[0]["id"];
+        if ($stmt === false) {
+            echo json_encode(["error" => $connection->error]);
+            http_response_code(500);
+            exit();
+        }
+
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $user = $result->fetch_assoc();
+
+        if (!empty($user)) {
+            $_SESSION["userID"] = $user["id"];
             setcookie("user", $username, time() + 86400, "/");
-            echo json_encode(["redirect" => "/fitsystem/index.php"]);
+            echo json_encode([
+                "redirect" => "/fitsystem/index.php",
+            ]);
             exit();
         } else {
             echo json_encode([
-                "error" => "Invalid email or password",
+                "error" => "Usuário ou senha inválidos",
                 "username" => $username,
                 "password" => $password,
             ]);
+            http_response_code(401);
             exit();
         }
     } catch (PDOException $e) {
@@ -39,4 +66,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo json_encode(["error" => "Invalid request method"]);
     exit();
 }
-?>

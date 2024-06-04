@@ -167,7 +167,7 @@ try {
         }
 
         $stmt = $connection->prepare(
-            "UPDATE client SET name = ?, date_of_birth = ?, email = ?, gender = ?, phone = ?, address = ? WHERE id = ?"
+            "UPDATE client SET name = ?, date_of_birth = ?, email = ?, gender = ?, phone = ?, address = ?, photo = ? WHERE id = ?"
         );
 
         if ($stmt === false) {
@@ -177,13 +177,14 @@ try {
         }
 
         $stmt->bind_param(
-            "ssssssi",
+            "sssssssi",
             $name,
             $dateOfBirth,
             $email,
             $gender,
             $phone,
             $address,
+            $photo,
             $id
         );
 
